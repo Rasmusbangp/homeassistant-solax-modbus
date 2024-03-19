@@ -69,7 +69,7 @@ from .const import (
 from .const import REGISTER_S32, REGISTER_U32, REGISTER_U16, REGISTER_S16, REGISTER_ULSB16MSB16, REGISTER_STR, REGISTER_WORDS, REGISTER_U8H, REGISTER_U8L
 
 
-PLATFORMS = [Platform.BUTTON, Platform.NUMBER, Platform.SELECT, Platform.SENSOR]
+PLATFORMS = [Platform.BUTTON, Platform.NUMBER, Platform.SELECT, Platform.SENSOR, Platform.TIME]
 
 #seriesnumber = 'unknown'
 
@@ -625,7 +625,7 @@ class SolaXModbusHub:
                 val = self.writequeue.get(addr)
                 await self.async_write_register(self._modbus_addr, addr, val)
             self.writequeue = {} # make sure we do not write multiple times
-        self.last_ts = time()
+        self.last_ts = time.time()
         for (k,v,) in self.data['_repeatUntil'].items():
             if self.last_ts < v:
                 buttondescr = self.computedButtons[k]

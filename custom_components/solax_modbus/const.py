@@ -10,6 +10,7 @@ from homeassistant.components.number import (
     NumberEntityDescription,
 )
 from homeassistant.components.select import SelectEntityDescription
+from homeassistant.components.time import TimeEntityDescription
 from homeassistant.components.button import ButtonEntityDescription
 from homeassistant.helpers.entity import EntityCategory
 from pymodbus.payload import Endian
@@ -98,6 +99,7 @@ class plugin_base:
     BUTTON_TYPES: list[ButtonEntityDescription]
     NUMBER_TYPES: list[NumberEntityDescription]
     SELECT_TYPES: list[SelectEntityDescription]
+    TIME_TYPES: list[TimeEntityDescription]
     block_size: int = 100
     auto_block_ignore_readerror: bool = None # if True or False, inserts a ignore_readerror statement for each block
     order16: int = None # Endian.BIG or Endian.LITTLE
@@ -156,6 +158,17 @@ class BaseModbusButtonEntityDescription(ButtonEntityDescription):
 
 @dataclass
 class BaseModbusSelectEntityDescription(SelectEntityDescription):
+    allowedtypes: int = 0 # overload with ALLDEFAULT from plugin
+    register: int = None
+    option_dict: dict = None
+    reverse_option_dict: dict = None # autocomputed
+    blacklist: list = None # none or list of serial number prefixes
+    write_method: int = WRITE_SINGLE_MODBUS # WRITE_SINGLE_MOBUS or WRITE_MULTI_MODBUS or WRITE_DATA_LOCAL
+    initvalue: int = None # initial default value for WRITE_DATA_LOCAL entities
+    unit: int = None #  optional for WRITE_DATA_LOCAL e.g REGISTER_U16, REGISTER_S32 ...
+
+@dataclass
+class BaseModbusTimeEntityDescription(TimeEntityDescription):
     allowedtypes: int = 0 # overload with ALLDEFAULT from plugin
     register: int = None
     option_dict: dict = None

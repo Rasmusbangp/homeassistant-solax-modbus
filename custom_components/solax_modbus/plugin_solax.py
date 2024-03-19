@@ -90,6 +90,10 @@ class SolaxModbusSelectEntityDescription(BaseModbusSelectEntityDescription):
     allowedtypes: int = ALLDEFAULT # maybe 0x0000 (nothing) is a better default choice
 
 @dataclass
+class SolaxModbusTimeEntityDescription(BaseModbusSelectEntityDescription):
+    allowedtypes: int = ALLDEFAULT # maybe 0x0000 (nothing) is a better default choice
+
+@dataclass
 class SolaXModbusSensorEntityDescription(BaseModbusSensorEntityDescription):
     allowedtypes: int = ALLDEFAULT # maybe 0x0000 (nothing) is a better default choice
     #order16: int = Endian.BIG
@@ -1976,6 +1980,31 @@ SELECT_TYPES = [
     ),
 ]
 
+# ================================= Time Declarations ============================================================
+
+TIME_TYPES = [
+
+###
+#
+#  Data only select types
+#
+###
+
+###
+#
+#  Normal select types
+#
+###
+    SolaxModbusTimeEntityDescription(
+        name = "Charger Start Time 1",
+        key = "charger_start_time_1",
+        register = 0x26,
+        option_dict = TIME_OPTIONS,
+        allowedtypes = AC | HYBRID | GEN2 | GEN3,
+        entity_category = EntityCategory.CONFIG,
+        icon = "mdi:clock-start",
+    ),
+]
 # ================================= Sennsor Declarations ============================================================
 
 SENSOR_TYPES_MAIN: list[SolaXModbusSensorEntityDescription] = [
@@ -7216,6 +7245,7 @@ plugin_instance = solax_plugin(
     NUMBER_TYPES = NUMBER_TYPES,
     BUTTON_TYPES = BUTTON_TYPES,
     SELECT_TYPES = SELECT_TYPES,
+    TIME_TYPES = TIME_TYPES,
     block_size = 100,
     order16 = Endian.BIG,
     order32 = Endian.LITTLE,
