@@ -248,6 +248,18 @@ SELECT_TYPES = [
     #
     ###
     GrowattModbusSelectEntityDescription(
+        name = "Select baud rate",
+        key = "Select_baud_rate",
+        register = 22,
+        option_dict = {
+                0: "9600bps",
+                1: "38400bps",
+            },
+        allowedtypes = GEN2 | GEN3 | GEN4 | GEN | X3,
+        entity_category = EntityCategory.CONFIG,
+        icon = "mdi:dip-switch",
+    ),
+    GrowattModbusSelectEntityDescription(
         name = "Limit Grid Export",
         key = "limit_grid_export",
         register = 122,
@@ -901,7 +913,7 @@ SELECT_TYPES = [
         allowedtypes = SPF,
         entity_category = EntityCategory.CONFIG,
         icon = "mdi:dip-switch",
-    ),
+    ),    
 ]
 
 # ================================= Sennsor Declarations ============================================================
@@ -2635,7 +2647,8 @@ SENSOR_TYPES: list[GrowattModbusSensorEntityDescription] = [
                   4: "Update Mode",
                   5: "PV Bat Online",
                   6: "Bat Online",
-                  8: "Normal Mode", },
+                  8: "Normal Mode",
+                  9: "Bypass" },
         register_type = REG_INPUT,
         allowedtypes = GEN | GEN2,
         icon = "mdi:run",
